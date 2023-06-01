@@ -53,21 +53,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: Get package that was changed in the last commit
-        id: diff
-        run: |
-          wget ${{ github.event.pull_request.diff_url }} -O pr.diff
-          pkg=$(grep "^\+\+\+ b/wdpk/" pr.diff | cut -d/ -f3 | uniq)
-
-          # concat packages into single line
-          pkgs=""
-          for p in $pkg; do
-            pkgs="${pkgs}${p} "
-          done
-          echo "Packages: ${pkgs}"
-          echo "PACKAGE=${pkgs}" >> $GITHUB_ENV
-
       - name: Make APKG packages for selected platforms
         id: make_apkg
         env:
